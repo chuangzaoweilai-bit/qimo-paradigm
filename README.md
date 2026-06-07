@@ -1,5 +1,7 @@
 # 起末范式
 
+[English README](README.en.md) | [English Whitepaper](docs/whitepaper.en.md)
+
 起末范式是一套重新定义计算机体系的实验性计算范式。
 
 它不以传统计算机中的程序、文件、进程、内存、指令集、操作系统或应用软件作为第一性基础，而是尝试从更高层的语义、状态、关系与演化过程重新组织计算。
