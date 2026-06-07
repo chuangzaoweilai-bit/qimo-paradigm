@@ -46,6 +46,8 @@
 
 起末范式要改变的正是这一点：计算不应只保证“流程被执行”，而应围绕“末端必然成立”组织自身。
 
+起末范式也反对底层静默处理。无法解析、无法匹配、无法验证或无法闭环的状态，不应被系统悄悄吞掉、跳过或包装成成功，而必须显式进入结构并触发回流。
+
 ## 基础公理
 
 起末范式从底层阻断人类思维对数字世界的直接污染。
@@ -155,6 +157,7 @@ docs/
   foundations.md 起末范式基础公理
   paradigm.md    起末范式的理论定义
   critique.md    对传统计算机体系的批判
+  silent-handling.md 静默处理批判
   semantic-completeness.md 完整语义库
   path-expansion.md 达末路径扩展
   program-construction.md 使用起末范式构建程序
