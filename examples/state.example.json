@@ -1,0 +1,8 @@
+{
+  "train_id": "train1",
+  "phase": "heartbeat",
+  "status": "running",
+  "info": "守护中，任务数=10",
+  "timestamp": 1737710400
+}
+

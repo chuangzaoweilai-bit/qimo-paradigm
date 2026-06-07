@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "unit_id": "train1.blockchain.semantic.001",
+      "contract_name": "Ownable",
+      "source_file": "/app/contracts/access/Ownable.sol",
+      "task_id": "train1.Ownable_38578bd7",
+      "phase": "phase1",
+      "type_id": "access",
+      "content": {
+        "function": "transferOwnership",
+        "visibility": "public",
+        "modifier": "onlyOwner",
+        "description": "允许当前合约所有者将所有权转移给新的地址。",
+        "semantic_tags": ["ownership", "access_control", "security"],
+        "code_snippet": "function transferOwnership(address newOwner) public onlyOwner { ... }"
+      },
+      "timestamp": 1719820000,
+      "trace": "train1-master"
+    }
+  ]
+}
+

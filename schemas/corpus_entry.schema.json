@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/qimo-paradigm/schemas/corpus_entry.schema.json",
+  "title": "CorpusEntryV1",
+  "description": "Container 2 output entry for staged corpus generation in the Qimo Paradigm semantic loop.",
+  "type": "object",
+  "required": [
+    "task_id",
+    "type_id",
+    "file",
+    "contracts_count",
+    "stages",
+    "healthcheck",
+    "models",
+    "past",
+    "present",
+    "reasoning_input",
+    "reasoning_output",
+    "timestamp"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type_id": {
+      "type": "string",
+      "enum": ["epoch_task", "file_task"]
+    },
+    "file": {
+      "type": "string"
+    },
+    "contracts_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "healthcheck": {
+      "type": "object",
+      "required": ["brownie_ok", "proof", "timestamp"],
+      "properties": {
+        "brownie_ok": {
+          "type": "boolean"
+        },
+        "proof": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "models": {
+      "type": "object",
+      "required": ["brownie", "qwen_target"],
+      "properties": {
+        "brownie": {
+          "type": "object",
+          "required": ["name", "version", "role", "device"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "device": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        },
+        "qwen_target": {
+          "type": "object",
+          "required": ["name", "role"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "past": {
+      "type": "object",
+      "required": ["audit_start", "checks", "interactions_digest"],
+      "properties": {
+        "audit_start": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["ok", "proof"],
+            "properties": {
+              "ok": {
+                "type": "boolean"
+              },
+              "proof": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "interactions_digest": {}
+      },
+      "additionalProperties": true
+    },
+    "present": {
+      "type": "object",
+      "required": ["metrics", "actions", "security_notes", "risk_prefilter"],
+      "properties": {
+        "metrics": {
+          "type": "object"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "security_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk_prefilter": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "reasoning_input": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reasoning_output": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

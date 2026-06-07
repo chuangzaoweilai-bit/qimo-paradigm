@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/qimo-paradigm/schemas/corpus_entry_results.schema.json",
+  "title": "CorpusEntryResultsVariant",
+  "description": "Container 2 corpus entry variant with aggregated execution results and multi-verification records.",
+  "type": "object",
+  "required": [
+    "task_id",
+    "file",
+    "contracts_count",
+    "stages",
+    "results",
+    "reasoning_input",
+    "reasoning_output",
+    "timestamp"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contracts_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "results": {
+      "type": "object",
+      "required": [
+        "compile_result",
+        "deploy_result",
+        "risk_prefilter",
+        "interactions_digest",
+        "present_metrics",
+        "security_notes",
+        "actions",
+        "multi_verification"
+      ],
+      "properties": {
+        "compile_result": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "minLength": 1
+            },
+            "solc_version": {
+              "type": "string"
+            },
+            "abi_snippet": {
+              "type": "string"
+            },
+            "binary_snippet": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "deploy_result": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "minLength": 1
+            },
+            "error": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "risk_prefilter": {
+          "type": "object",
+          "required": ["level"],
+          "properties": {
+            "level": {
+              "type": "string",
+              "minLength": 1
+            },
+            "label": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true
+        },
+        "interactions_digest": {
+          "type": "object",
+          "properties": {
+            "selectors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "fail_ratio": {
+              "type": "number",
+              "minimum": 0
+            },
+            "tx_count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "present_metrics": {
+          "type": "object"
+        },
+        "security_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "multi_verification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["combo", "result", "innovation"],
+            "properties": {
+              "combo": {
+                "type": "string",
+                "minLength": 1
+              },
+              "result": {
+                "type": "string",
+                "minLength": 1
+              },
+              "innovation": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "reasoning_input": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reasoning_output": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

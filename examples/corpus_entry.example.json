@@ -1,0 +1,66 @@
+{
+  "task_id": "blockchain_semantics.ContractA.sol",
+  "type_id": "file_task",
+  "file": "contracts/ContractA.sol",
+  "contracts_count": 1,
+  "stages": ["phase1", "phase2", "phase3"],
+  "healthcheck": {
+    "brownie_ok": true,
+    "proof": "corpus written at output/brownie_corpus.jsonl",
+    "timestamp": 1710000000
+  },
+  "models": {
+    "brownie": {
+      "name": "brownie-risk-prefilter",
+      "version": "0.1.0",
+      "role": "risk_prefilter_cpu",
+      "device": "cpu"
+    },
+    "qwen_target": {
+      "name": "Qwen-14B",
+      "role": "semantic_generation_gpu"
+    }
+  },
+  "past": {
+    "audit_start": "理解起始: 训练对象=任务文件(contracts/ContractA.sol)",
+    "checks": {
+      "来源是否可用": {
+        "ok": true,
+        "proof": "文件任务模式"
+      },
+      "时效是否最新": {
+        "ok": true,
+        "proof": "N/A"
+      }
+    },
+    "interactions_digest": {
+      "items": []
+    }
+  },
+  "present": {
+    "metrics": {
+      "functions": 8,
+      "events": 3,
+      "external_calls": 1
+    },
+    "actions": [
+      "compile_check",
+      "dependency_verify",
+      "path_healthcheck",
+      "selector_risk_review",
+      "fail_ratio_watch",
+      "risk_prefilter_cpu"
+    ],
+    "security_notes": [
+      "contains external call",
+      "requires access-control review"
+    ],
+    "risk_prefilter": {
+      "risk_level": "medium",
+      "requires_reasoning": true
+    }
+  },
+  "reasoning_input": "完成任务 contracts/ContractA.sol",
+  "reasoning_output": "起始: 完成任务 contracts/ContractA.sol -> 最终答案: 未达成",
+  "timestamp": 1710000000
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/qimo-paradigm/schemas/state.schema.json",
+  "title": "MasterState",
+  "description": "Container 1 master state heartbeat and phase status.",
+  "type": "object",
+  "required": ["train_id", "phase", "status", "timestamp"],
+  "properties": {
+    "train_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["running", "success", "waiting", "error"]
+    },
+    "info": {},
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}
+

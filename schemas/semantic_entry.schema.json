@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/qimo-paradigm/schemas/semantic_entry.schema.json",
+  "title": "SemanticEntryV1",
+  "description": "Container 3 semantic entry for blockchain semantic generation in the Qimo Paradigm semantic loop.",
+  "type": "object",
+  "required": [
+    "unit_id",
+    "contract_name",
+    "source_file",
+    "task_id",
+    "phase",
+    "type_id",
+    "content",
+    "timestamp",
+    "trace"
+  ],
+  "properties": {
+    "unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["phase1", "phase2", "phase3"]
+    },
+    "type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "function": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        },
+        "modifier": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "semantic_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code_snippet": {
+          "type": "string"
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "trace": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}
+
