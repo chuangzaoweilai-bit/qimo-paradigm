@@ -1,22 +1,73 @@
-MIT License
+Qimo Paradigm Public Free License v1.0
 
 Copyright (c) 2026 Qimo Paradigm contributors
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This project is published as a free public computing paradigm.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The purpose of this license is to allow everyone to learn from, use, study,
+share, improve, translate, implement, and extend the Qimo Paradigm, while
+preventing any person or organization from turning the paradigm itself, or
+direct derivative technologies based on it, into an exclusive patent-controlled
+position.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+1. Permission
+
+Permission is granted, free of charge, to any person obtaining a copy of this
+project, its documents, examples, schemas, concepts, and associated materials
+to:
+
+- read, study, and learn from them;
+- copy and redistribute them;
+- modify and improve them;
+- translate them;
+- create implementations, experiments, tools, systems, and derivative works
+  based on them;
+- use them for research, education, engineering, public knowledge, and
+  constructive applications.
+
+2. Free Use Requirement
+
+Any derivative technology, implementation, system, documentation, method,
+architecture, or concept that is substantially based on the Qimo Paradigm must
+remain available for free use.
+
+You may not use this project to create an exclusive paid-only control position
+over the paradigm itself or over direct derivative technologies that depend on
+the paradigm's core ideas.
+
+3. No Patent Appropriation
+
+No person or organization may use the Qimo Paradigm, its documents, examples,
+schemas, concepts, structures, or direct derivative technologies to apply for,
+obtain, enforce, or claim exclusive patent rights that would prevent others
+from freely learning, using, implementing, improving, or extending the Qimo
+Paradigm.
+
+By using, copying, modifying, distributing, implementing, or extending this
+project, you agree not to assert patents against any person or organization for
+their free use, implementation, improvement, or extension of the Qimo Paradigm
+or direct derivative technologies based on it.
+
+4. Attribution
+
+Redistributions or substantial derivative documents should preserve a clear
+reference to the Qimo Paradigm project and this license.
+
+5. Responsible Use
+
+This project is intended for constructive use, including learning, research,
+education, open collaboration, public knowledge, and positive engineering.
+
+The project should not be used to harm others, break systems, bypass lawful
+constraints, or create uncontrolled risk.
+
+6. No Warranty
+
+THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, SECURITY, OR CORRECTNESS.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE PROJECT OR THE USE
+OR OTHER DEALINGS IN THE PROJECT.
 

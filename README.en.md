@@ -8,6 +8,8 @@ Qimo Paradigm is a universal-domain paradigm. It is not specific to blockchain, 
 
 This project is published for free. The goal is not to own or close the idea, but to make this new bottom-up computing paradigm visible to the public and encourage people to use it responsibly.
 
+No person or organization may use Qimo Paradigm, its documents, examples, structures, or direct derivative technologies to apply for, obtain, or enforce exclusive patent rights that would prevent others from freely learning, using, implementing, improving, or extending it. Direct technologies derived from this computing paradigm must remain available for free use.
+
 We hope more people will improve and maintain it. A new computing paradigm cannot be completed by one person alone.
 
 ## Minimal Example
@@ -312,4 +314,4 @@ How is closure verified?
 
 ## License
 
-MIT License.
+Qimo Paradigm Public Free License v1.0.
