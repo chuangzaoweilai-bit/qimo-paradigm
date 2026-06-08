@@ -138,6 +138,14 @@
 
 因此，它不依赖传统意义上的外部补丁来维持正确。问题不是被补丁遮住，而是被结构自身的闭环条件识别出来，并回到结构内部继续修正。
 
+## 球形运行空间
+
+球形运行空间是起末范式在底层运行环境上的一种工程化设计。
+
+它以本地真实物理磁盘为底层依托，不依赖传统重型虚拟机或独立虚拟磁盘；通过“手套”式柔性隔离，从空闲空间中按需划拨容量，形成单入口、单路径、可加密、可跨设备漫游的运行空间。
+
+它的目标不是复制传统虚拟机，而是为起末范式提供更轻、更直接、更闭环的底层运行环境。
+
 ## 当前状态
 
 这个仓库正在从零重建公开版本。
@@ -164,6 +172,8 @@ docs/
   path-expansion.md 达末路径扩展
   program-construction.md 使用起末范式构建程序
   structural-closure.md 结构闭环
+  spherical-runtime-space.md 球形运行空间设计
+  spherical-runtime-space.en.md Spherical Runtime Space
   popularization.md 大众化计算
   multi-container-semantic-loop.md 多容器语义训练闭环
   container1-master.md 容器 1 Master 闭环控制器

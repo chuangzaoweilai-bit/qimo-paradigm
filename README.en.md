@@ -194,6 +194,16 @@ This includes software engineering, AI semantics, blockchain, education, medicin
 
 The domain is the application object, not the paradigm boundary.
 
+## Spherical Runtime Space
+
+Spherical Runtime Space is a proposed low-level runtime environment design for Qimo Paradigm.
+
+It uses the real local physical disk as the bottom foundation instead of relying on heavy virtual machines or independent virtual disks. Through a glove-like flexible isolation model, it allocates capacity from free storage on demand and forms a single-entrance, single-path, encrypted, cross-device runtime space.
+
+Its goal is not to reproduce traditional virtualization, but to provide a lighter, more direct, and more closed runtime base for Qimo Paradigm.
+
+See [Spherical Runtime Space](docs/spherical-runtime-space.en.md).
+
 ## Case Study: Three-Container Semantic Loop
 
 An early experiment used three containers to construct blockchain semantics:
@@ -262,6 +272,8 @@ docs/
   path-expansion.md
   program-construction.md
   structural-closure.md
+  spherical-runtime-space.md
+  spherical-runtime-space.en.md
   popularization.md
   multi-container-semantic-loop.md
   container1-master.md
@@ -301,4 +313,3 @@ How is closure verified?
 ## License
 
 MIT License.
-

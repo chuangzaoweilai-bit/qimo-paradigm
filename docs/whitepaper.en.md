@@ -315,7 +315,41 @@ smart contracts
 
 This is not a simple pipeline. It is a gated loop with reverse verification.
 
-## 10. Data Structures
+## 10. Spherical Runtime Space
+
+Spherical Runtime Space is a proposed low-level runtime environment design for Qimo Paradigm.
+
+It rejects the assumption that isolation must begin from a heavy virtual machine or an independent virtual disk. Instead, it uses the real local physical disk as the bottom foundation and creates a flexible isolated runtime boundary around it.
+
+The model is similar to a glove:
+
+```text
+physical hardware = body
+spherical runtime space = glove
+```
+
+It dynamically allocates capacity from free storage, avoids overwriting used data, keeps original disk structures intact, and aims for a single direct mapping path:
+
+```text
+physical disk path -> spherical space mapping path -> program runtime path
+```
+
+The space exposes one explicit entrance and routes access, snapshots, backups, sync, and image transfer through encrypted channels. It does not claim absolute unbreakability; it defines a minimal-exposure closure boundary.
+
+Its relation to Qimo Paradigm is direct:
+
+```text
+terminal first
+single-path terminal reaching
+embedded resource rules
+no silent handling
+substructure closure
+cross-device rule persistence
+```
+
+This runtime-space design is published as a free public proposal.
+
+## 11. Data Structures
 
 The repository currently includes early JSON schemas:
 
@@ -329,7 +363,7 @@ semantic_entry.schema.json
 
 These schemas are not final. They are public draft structures for turning the paradigm into verifiable artifacts.
 
-## 11. Relation to Existing Systems
+## 12. Relation to Existing Systems
 
 Qimo Paradigm is not simply:
 
@@ -353,7 +387,7 @@ explicit gaps over silent handling
 substructure closure over loose modules
 ```
 
-## 12. Current Status
+## 13. Current Status
 
 This is an initial public draft.
 
@@ -379,7 +413,7 @@ waiting
 error
 ```
 
-## 13. Public Intent
+## 14. Public Intent
 
 Qimo Paradigm is published for free.
 
@@ -390,4 +424,3 @@ Let a new computing paradigm appear.
 Let more people understand it.
 Let it be used well.
 ```
-
