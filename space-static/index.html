@@ -173,6 +173,62 @@
       font-size: 13px;
     }
 
+    .live-model {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.72fr) minmax(420px, 1.28fr);
+      gap: 28px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .live-model h2 { margin: 0; font-size: 20px; }
+    .live-meta {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 8px 12px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .live-meta dt { color: var(--muted); font-weight: 700; }
+    .live-meta dd { margin: 0; overflow-wrap: anywhere; }
+    .live-button {
+      min-height: 42px;
+      padding: 0 16px;
+      color: #ffffff;
+      background: var(--dark);
+      border: 1px solid var(--dark);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 750;
+    }
+    .live-button:hover { background: #263a30; }
+    .live-button:disabled { cursor: wait; opacity: 0.58; }
+    .live-result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 30px;
+      margin-bottom: 8px;
+    }
+    .live-result-head h3 { margin: 0; font-size: 14px; }
+    .live-status {
+      padding: 5px 8px;
+      border-radius: 4px;
+      color: var(--muted);
+      background: #e7ece9;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .live-status.running { color: var(--amber); background: var(--amber-soft); }
+    .live-status.accepted { color: var(--green); background: var(--green-soft); }
+    .live-status.rejected, .live-status.error { color: var(--red); background: var(--red-soft); }
+    .live-output {
+      min-height: 238px;
+      max-height: 420px;
+      border-radius: 6px;
+    }
+
     .audit { padding-top: 26px; }
     .audit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
     .audit-head h2 { margin: 0; font-size: 20px; }
@@ -226,6 +282,7 @@
       .brand h1 { font-size: 25px; }
       .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .workbench { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+      .live-model { grid-template-columns: minmax(0, 1fr); gap: 20px; }
       .result-row { grid-template-columns: 1fr 72px; }
       .result-row .meter { grid-column: 1 / -1; grid-row: 2; }
       .audit-head { align-items: flex-start; flex-direction: column; gap: 4px; }
@@ -302,6 +359,26 @@
       </section>
     </section>
 
+    <section class="live-model" aria-labelledby="live-model-title">
+      <div>
+        <h2 id="live-model-title">Live bounded proposal</h2>
+        <dl class="live-meta">
+          <dt>Generator</dt><dd>Qwen3-1.7B</dd>
+          <dt>Compute</dt><dd>NVIDIA T4 on Modal</dd>
+          <dt>Limit</dt><dd>4 requests per UTC day</dd>
+          <dt>Authority</dt><dd>Deterministic external validator</dd>
+        </dl>
+        <button id="live-model-button" class="live-button" type="button">Generate next proposal</button>
+      </div>
+      <div aria-live="polite">
+        <div class="live-result-head">
+          <h3>Validated model output</h3>
+          <span id="live-model-status" class="live-status">Ready</span>
+        </div>
+        <pre id="live-model-output" class="live-output">No request sent.</pre>
+      </div>
+    </section>
+
     <section class="audit">
       <div class="audit-head">
         <h2>Epoch audit</h2>
@@ -332,6 +409,8 @@
 
   <script>
     "use strict";
+
+    const MODAL_ENDPOINT = "https://xianshenglu244--qimo-closure-model-qimo-step.modal.run";
 
     const REQUIRED_UNITS = [
       "origin_modeling", "terminal_modeling", "path_generation",
@@ -470,6 +549,60 @@
       document.querySelector("#record").textContent = JSON.stringify(result, null, 2);
     }
 
+    async function requestLiveProposal() {
+      const button = document.querySelector("#live-model-button");
+      const status = document.querySelector("#live-model-status");
+      const output = document.querySelector("#live-model-output");
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 150000);
+
+      button.disabled = true;
+      status.textContent = "Running";
+      status.className = "live-status running";
+      output.textContent = "Starting the bounded GPU request...";
+
+      try {
+        const response = await fetch(MODAL_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            origin: document.querySelector("#origin").value.trim(),
+            terminal: document.querySelector("#terminal").value.trim(),
+            epoch: 1,
+            present_units: [],
+            present_gates: []
+          }),
+          signal: controller.signal
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) {
+          status.textContent = "Unavailable";
+          status.className = "live-status error";
+          output.textContent = JSON.stringify(result, null, 2);
+          return;
+        }
+
+        const verdict = result.validation?.verdict || "rejected";
+        status.textContent = verdict;
+        status.className = `live-status ${verdict === "accepted" ? "accepted" : "rejected"}`;
+        output.textContent = JSON.stringify({
+          model: result.model,
+          validation: result.validation,
+          closure_status: result.closure_status,
+          closure_note: result.closure_note,
+          quota: result.quota
+        }, null, 2);
+      } catch (error) {
+        status.textContent = "Error";
+        status.className = "live-status error";
+        output.textContent = error.name === "AbortError"
+          ? "The live request exceeded 150 seconds and was stopped."
+          : `Live request failed: ${error.message}`;
+      } finally {
+        window.clearTimeout(timeout);
+      }
+    }
+
     const range = document.querySelector("#epochs");
     const number = document.querySelector("#epoch-number");
     range.addEventListener("input", () => { number.value = range.value; });
@@ -481,6 +614,7 @@
       event.preventDefault();
       render();
     });
+    document.querySelector("#live-model-button").addEventListener("click", requestLiveProposal);
     render();
   </script>
 </body>
