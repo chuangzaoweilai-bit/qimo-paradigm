@@ -229,6 +229,47 @@
       border-radius: 6px;
     }
 
+    .benchmark {
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .benchmark-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .benchmark-head h2 { margin: 0; font-size: 20px; }
+    .benchmark-head p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+    .benchmark-version {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      color: var(--green);
+      background: var(--green-soft);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .benchmark-meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin: 20px 0 16px;
+    }
+    .benchmark-meta div {
+      padding-left: 12px;
+      border-left: 3px solid var(--line);
+    }
+    .benchmark-meta div:last-child { border-left-color: var(--green); }
+    .benchmark-meta dt { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .benchmark-meta dd { margin: 5px 0 0; font-size: 16px; font-weight: 800; }
+    .benchmark-table table { min-width: 720px; }
+    .benchmark-table tbody tr:last-child { background: #f0f8f4; }
+    .benchmark-result { margin: 14px 0 0; color: var(--ink); line-height: 1.55; }
+    .benchmark-links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 16px; }
+    .benchmark-links a { color: var(--green); font-size: 13px; font-weight: 750; }
+
     .audit { padding-top: 26px; }
     .audit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
     .audit-head h2 { margin: 0; font-size: 20px; }
@@ -283,6 +324,8 @@
       .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .workbench { grid-template-columns: minmax(0, 1fr); gap: 26px; }
       .live-model { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      .benchmark-head { flex-direction: column; gap: 8px; }
+      .benchmark-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .result-row { grid-template-columns: 1fr 72px; }
       .result-row .meter { grid-column: 1 / -1; grid-row: 2; }
       .audit-head { align-items: flex-start; flex-direction: column; gap: 4px; }
@@ -294,6 +337,7 @@
       .scope-badge { white-space: normal; }
       .flow-step { min-height: 54px; padding: 8px 5px; }
       .workbench { padding-top: 18px; }
+      .benchmark-meta { grid-template-columns: minmax(0, 1fr); gap: 10px; }
       th, td { padding: 10px; }
     }
   </style>
@@ -357,6 +401,40 @@
         <p id="result-copy" class="result-copy"></p>
         <div class="boundary">This deterministic demo tests the declared feedback mechanism. It does not prove consciousness, AGI, or unlimited autonomous evolution.</div>
       </section>
+    </section>
+
+    <section class="benchmark" aria-labelledby="benchmark-title">
+      <div class="benchmark-head">
+        <div>
+          <h2 id="benchmark-title">Frozen multi-domain benchmark</h2>
+          <p>Same Qwen3-1.7B weights and decoding; only the inference runtime changes.</p>
+        </div>
+        <span class="benchmark-version">Protocol 1.0.0</span>
+      </div>
+      <dl class="benchmark-meta">
+        <div><dt>Domains</dt><dd>3</dd></div>
+        <div><dt>Tasks</dt><dd>6</dd></div>
+        <div><dt>Compute</dt><dd>Modal T4</dd></div>
+        <div><dt>Qimo closure</dt><dd>4 / 6</dd></div>
+      </dl>
+      <div class="table-scroll benchmark-table" tabindex="0" aria-label="Multi-domain benchmark results">
+        <table>
+          <thead>
+            <tr><th>Mode</th><th>Closed</th><th>Closure rate</th><th>Final score</th><th>Avg epochs</th><th>Model calls</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>One shot</td><td>3 / 6</td><td>50.0%</td><td>0.789</td><td>1.00</td><td>6</td></tr>
+            <tr><td>Generic retry</td><td>3 / 6</td><td>50.0%</td><td>0.789</td><td>2.00</td><td>12</td></tr>
+            <tr><td>Qimo structured</td><td>4 / 6</td><td>66.7%</td><td>0.844</td><td>1.83</td><td>11</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="benchmark-result">Qimo closed one additional software-repair task with one fewer model call than generic retry. Both smart-contract tasks remained not closed.</p>
+      <div class="boundary">This is a six-task pilot with deterministic validators. It is initial evidence, not a statistically sufficient general-performance claim.</div>
+      <div class="benchmark-links">
+        <a href="https://github.com/chuangzaoweilai-bit/qimo-paradigm/blob/main/docs/multidomain-benchmark-v1.en.md" target="_blank" rel="noreferrer">Method and limitations</a>
+        <a href="https://github.com/chuangzaoweilai-bit/qimo-paradigm/blob/main/artifacts/qimo-multidomain-v1.json" target="_blank" rel="noreferrer">Complete audit JSON</a>
+      </div>
     </section>
 
     <section class="live-model" aria-labelledby="live-model-title">

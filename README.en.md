@@ -12,6 +12,25 @@ No person or organization may use Qimo Paradigm, its documents, examples, struct
 
 We hope more people will improve and maintain it. A new computing paradigm cannot be completed by one person alone.
 
+## Executable Evidence
+
+The repository now contains a first executable base-model runtime and a frozen
+multi-domain pilot benchmark:
+
+- [Qimo Structured Model](docs/qimo-structured-model.en.md): architecture,
+  closure authority, feedback, and verified rule memory.
+- [Multi-domain Benchmark v1](docs/multidomain-benchmark-v1.en.md): protocol,
+  results, limitations, and interpretation.
+- [Full audit record](artifacts/qimo-multidomain-v1.json): every raw model
+  output, validation result, gap, feedback task, and rule snapshot.
+- [Live Closure Lab](https://huggingface.co/spaces/qimo-paradigm/qimo-closure-lab):
+  browser simulation and a bounded Modal-backed model proposal.
+
+In the frozen six-task pilot, the same Qwen3-1.7B model closed 3/6 tasks with
+one-shot inference, 3/6 with generic retry, and 4/6 with Qimo structured
+feedback. This is initial evidence, not a general proof; the sample is too small
+for a broad performance claim.
+
 ## Minimal Example
 
 ```text

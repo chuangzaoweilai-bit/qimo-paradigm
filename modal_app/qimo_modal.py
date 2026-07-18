@@ -67,12 +67,7 @@ class ProposalModel:
         self.model.eval()
         model_cache.commit()
 
-    @modal.method()
-    def generate(self, request: dict) -> str:
-        messages = [
-            {"role": "system", "content": "Return only the requested JSON object."},
-            {"role": "user", "content": build_prompt(request)},
-        ]
+    def _complete(self, messages: list[dict[str, str]], max_new_tokens: int) -> str:
         prompt = self.tokenizer.apply_chat_template(
             messages,
             tokenize=False,
@@ -85,12 +80,34 @@ class ProposalModel:
         with self.torch.inference_mode():
             generated = self.model.generate(
                 **model_inputs,
-                max_new_tokens=MAX_NEW_TOKENS,
+                max_new_tokens=max_new_tokens,
                 do_sample=False,
                 pad_token_id=self.tokenizer.eos_token_id,
             )
         generated_tokens = generated[0][model_inputs.input_ids.shape[-1] :]
         return self.tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
+
+    @modal.method()
+    def generate(self, request: dict) -> str:
+        messages = [
+            {"role": "system", "content": "Return only the requested JSON object."},
+            {"role": "user", "content": build_prompt(request)},
+        ]
+        return self._complete(messages, MAX_NEW_TOKENS)
+
+    @modal.method()
+    def complete(self, prompt: str, max_new_tokens: int = 320) -> str:
+        bounded_tokens = max(64, min(int(max_new_tokens), 384))
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "Follow the supplied benchmark protocol and return only one JSON object."
+                ),
+            },
+            {"role": "user", "content": str(prompt)[:12000]},
+        ]
+        return self._complete(messages, bounded_tokens)
 
 
 @app.function(

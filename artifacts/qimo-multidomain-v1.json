@@ -1,0 +1,1783 @@
+{
+  "benchmark_id": "qimo-multidomain-v1",
+  "validator_protocol_version": "1.0.0",
+  "generated_at": "2026-07-18T02:00:56.490730+00:00",
+  "claim_scope": "bounded structural inference with deterministic domain validators",
+  "control": "same base model and decoding; only the runtime mode changes",
+  "domains": [
+    "multi_step_planning",
+    "smart_contract_audit",
+    "software_repair"
+  ],
+  "task_count": 6,
+  "base_model": {
+    "provider": "Modal",
+    "model_id": "Qwen/Qwen3-1.7B",
+    "gpu": "NVIDIA T4",
+    "max_new_tokens": 320,
+    "do_sample": false,
+    "temperature": null
+  },
+  "modes": {
+    "one_shot": {
+      "summary": {
+        "tasks": 6,
+        "closed_tasks": 3,
+        "closure_rate": 0.5,
+        "average_final_score": 0.7889,
+        "average_epochs": 1,
+        "model_calls": 6,
+        "false_closure_claims": 0
+      },
+      "rule_memory": {
+        "universal": [
+          "no_silent_success",
+          "external_validator_controls_closure",
+          "failed_candidate_must_remain_not_closed"
+        ],
+        "domains": {
+          "software_repair": [],
+          "smart_contract_audit": [],
+          "multi_step_planning": []
+        }
+      },
+      "runs": [
+        {
+          "task_id": "software.clamp-boundaries",
+          "domain": "software_repair",
+          "mode": "one_shot",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"software.clamp-boundaries\",\n  \"answer\": \"return max(low, min(high, value))\",\n  \"evidence\": [\"clamp(5, 0, 10) == 5\", \"clamp(-2, 0, 10) == 0\", \"clamp(12, 0, 10) == 10\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.clamp-boundaries",
+                "answer": "return max(low, min(high, value))",
+                "evidence": [
+                  "clamp(5, 0, 10) == 5",
+                  "clamp(-2, 0, 10) == 0",
+                  "clamp(12, 0, 10) == 10"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "patch_matches_reference": true,
+                  "behavior_matches_except_syntax": false,
+                  "declared_checks": [
+                    "clamp(5, 0, 10) == 5",
+                    "clamp(-2, 0, 10) == 0",
+                    "clamp(12, 0, 10) == 10"
+                  ]
+                },
+                "validated_rules": [
+                  "software_patch_must_satisfy_declared_behavior"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "software.off-by-one",
+          "domain": "software_repair",
+          "mode": "one_shot",
+          "status": "not_closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items))\",\n  \"evidence\": [\"the loop skips the final item in every non-empty list, which is fixed by iterating over all elements\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items))",
+                "evidence": [
+                  "the loop skips the final item in every non-empty list, which is fixed by iterating over all elements"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.8,
+                "gaps": [
+                  {
+                    "code": "patch_syntax_missing_colon",
+                    "message": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                    "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                  }
+                ],
+                "evidence": {
+                  "patch_matches_reference": false,
+                  "behavior_matches_except_syntax": true,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.withdraw-order",
+          "domain": "smart_contract_audit",
+          "mode": "one_shot",
+          "status": "not_closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.owner-validation",
+          "domain": "smart_contract_audit",
+          "mode": "one_shot",
+          "status": "not_closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.release-order",
+          "domain": "multi_step_planning",
+          "mode": "one_shot",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"planning.release-order\",\n  \"answer\": [\"spec\", \"implement\", \"test\", \"security_review\", \"release\"],\n  \"evidence\": [\"Use every step exactly once.\", \"Satisfy every precedence constraint.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.release-order",
+                "answer": [
+                  "spec",
+                  "implement",
+                  "test",
+                  "security_review",
+                  "release"
+                ],
+                "evidence": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "implement",
+                    "release",
+                    "security_review",
+                    "spec",
+                    "test"
+                  ],
+                  "precedence_passed": 5,
+                  "precedence_total": 5
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.data-pipeline",
+          "domain": "multi_step_planning",
+          "mode": "one_shot",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "one_shot",
+              "raw_output": "{\n  \"task_id\": \"planning.data-pipeline\",\n  \"answer\": [\"collect\", \"validate\", \"transform\", \"train\", \"evaluate\"],\n  \"evidence\": [\n    \"collect before validate satisfies the precedence constraint\",\n    \"validate before transform satisfies the precedence constraint\",\n    \"transform before train satisfies the precedence constraint\",\n    \"train before evaluate satisfies the precedence constraint\"\n  ],\n  \"rules_applied\": [\"Use every step exactly once.\", \"Satisfy every precedence constraint.\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.data-pipeline",
+                "answer": [
+                  "collect",
+                  "validate",
+                  "transform",
+                  "train",
+                  "evaluate"
+                ],
+                "evidence": [
+                  "collect before validate satisfies the precedence constraint",
+                  "validate before transform satisfies the precedence constraint",
+                  "transform before train satisfies the precedence constraint",
+                  "train before evaluate satisfies the precedence constraint"
+                ],
+                "rules_applied": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "collect",
+                    "evaluate",
+                    "train",
+                    "transform",
+                    "validate"
+                  ],
+                  "precedence_passed": 4,
+                  "precedence_total": 4
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        }
+      ]
+    },
+    "generic_retry": {
+      "summary": {
+        "tasks": 6,
+        "closed_tasks": 3,
+        "closure_rate": 0.5,
+        "average_final_score": 0.7889,
+        "average_epochs": 2,
+        "model_calls": 12,
+        "false_closure_claims": 0
+      },
+      "rule_memory": {
+        "universal": [
+          "no_silent_success",
+          "external_validator_controls_closure",
+          "failed_candidate_must_remain_not_closed"
+        ],
+        "domains": {
+          "software_repair": [],
+          "smart_contract_audit": [],
+          "multi_step_planning": []
+        }
+      },
+      "runs": [
+        {
+          "task_id": "software.clamp-boundaries",
+          "domain": "software_repair",
+          "mode": "generic_retry",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"software.clamp-boundaries\",\n  \"answer\": \"return max(low, min(high, value))\",\n  \"evidence\": [\"clamp(5, 0, 10) == 5\", \"clamp(-2, 0, 10) == 0\", \"clamp(12, 0, 10) == 10\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.clamp-boundaries",
+                "answer": "return max(low, min(high, value))",
+                "evidence": [
+                  "clamp(5, 0, 10) == 5",
+                  "clamp(-2, 0, 10) == 0",
+                  "clamp(12, 0, 10) == 10"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "patch_matches_reference": true,
+                  "behavior_matches_except_syntax": false,
+                  "declared_checks": [
+                    "clamp(5, 0, 10) == 5",
+                    "clamp(-2, 0, 10) == 0",
+                    "clamp(12, 0, 10) == 10"
+                  ]
+                },
+                "validated_rules": [
+                  "software_patch_must_satisfy_declared_behavior"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "software.off-by-one",
+          "domain": "software_repair",
+          "mode": "generic_retry",
+          "status": "not_closed",
+          "epochs_used": 3,
+          "model_calls": 3,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items))\",\n  \"evidence\": [\"the loop skips the final item in every non-empty list, which is fixed by iterating over all elements\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items))",
+                "evidence": [
+                  "the loop skips the final item in every non-empty list, which is fixed by iterating over all elements"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.8,
+                "gaps": [
+                  {
+                    "code": "patch_syntax_missing_colon",
+                    "message": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                    "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                  }
+                ],
+                "evidence": {
+                  "patch_matches_reference": false,
+                  "behavior_matches_except_syntax": true,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items))\",\n  \"evidence\": [\"the loop skips the final item in every non-empty list, which is fixed by iterating over all elements\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items))",
+                "evidence": [
+                  "the loop skips the final item in every non-empty list, which is fixed by iterating over all elements"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.8,
+                "gaps": [
+                  {
+                    "code": "patch_syntax_missing_colon",
+                    "message": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                    "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                  }
+                ],
+                "evidence": {
+                  "patch_matches_reference": false,
+                  "behavior_matches_except_syntax": true,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 3,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items))\",\n  \"evidence\": [\"the loop skips the final item in every non-empty list, which is fixed by iterating over all elements\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items))",
+                "evidence": [
+                  "the loop skips the final item in every non-empty list, which is fixed by iterating over all elements"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.8,
+                "gaps": [
+                  {
+                    "code": "patch_syntax_missing_colon",
+                    "message": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                    "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                  }
+                ],
+                "evidence": {
+                  "patch_matches_reference": false,
+                  "behavior_matches_except_syntax": true,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.withdraw-order",
+          "domain": "smart_contract_audit",
+          "mode": "generic_retry",
+          "status": "not_closed",
+          "epochs_used": 3,
+          "model_calls": 3,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 3,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.owner-validation",
+          "domain": "smart_contract_audit",
+          "mode": "generic_retry",
+          "status": "not_closed",
+          "epochs_used": 3,
+          "model_calls": 3,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 3,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.release-order",
+          "domain": "multi_step_planning",
+          "mode": "generic_retry",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"planning.release-order\",\n  \"answer\": [\"spec\", \"implement\", \"test\", \"security_review\", \"release\"],\n  \"evidence\": [\"Use every step exactly once.\", \"Satisfy every precedence constraint.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.release-order",
+                "answer": [
+                  "spec",
+                  "implement",
+                  "test",
+                  "security_review",
+                  "release"
+                ],
+                "evidence": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "implement",
+                    "release",
+                    "security_review",
+                    "spec",
+                    "test"
+                  ],
+                  "precedence_passed": 5,
+                  "precedence_total": 5
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.data-pipeline",
+          "domain": "multi_step_planning",
+          "mode": "generic_retry",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "generic_retry",
+              "raw_output": "{\n  \"task_id\": \"planning.data-pipeline\",\n  \"answer\": [\"collect\", \"validate\", \"transform\", \"train\", \"evaluate\"],\n  \"evidence\": [\n    \"collect before validate satisfies the precedence constraint\",\n    \"validate before transform satisfies the precedence constraint\",\n    \"transform before train satisfies the precedence constraint\",\n    \"train before evaluate satisfies the precedence constraint\"\n  ],\n  \"rules_applied\": [\"Use every step exactly once.\", \"Satisfy every precedence constraint.\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.data-pipeline",
+                "answer": [
+                  "collect",
+                  "validate",
+                  "transform",
+                  "train",
+                  "evaluate"
+                ],
+                "evidence": [
+                  "collect before validate satisfies the precedence constraint",
+                  "validate before transform satisfies the precedence constraint",
+                  "transform before train satisfies the precedence constraint",
+                  "train before evaluate satisfies the precedence constraint"
+                ],
+                "rules_applied": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "collect",
+                    "evaluate",
+                    "train",
+                    "transform",
+                    "validate"
+                  ],
+                  "precedence_passed": 4,
+                  "precedence_total": 4
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        }
+      ]
+    },
+    "qimo": {
+      "summary": {
+        "tasks": 6,
+        "closed_tasks": 4,
+        "closure_rate": 0.6667,
+        "average_final_score": 0.8444,
+        "average_epochs": 1.8333,
+        "model_calls": 11,
+        "false_closure_claims": 0
+      },
+      "rule_memory": {
+        "universal": [
+          "no_silent_success",
+          "external_validator_controls_closure",
+          "failed_candidate_must_remain_not_closed"
+        ],
+        "domains": {
+          "software_repair": [
+            "software_patch_must_satisfy_declared_behavior"
+          ],
+          "smart_contract_audit": [],
+          "multi_step_planning": [
+            "plan_must_cover_steps_and_respect_precedence"
+          ]
+        }
+      },
+      "runs": [
+        {
+          "task_id": "software.clamp-boundaries",
+          "domain": "software_repair",
+          "mode": "qimo",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [
+            "software_patch_must_satisfy_declared_behavior"
+          ],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"software.clamp-boundaries\",\n  \"answer\": \"return max(low, min(high, value))\",\n  \"evidence\": [\"clamp(5, 0, 10) == 5\", \"clamp(-2, 0, 10) == 0\", \"clamp(12, 0, 10) == 10\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.clamp-boundaries",
+                "answer": "return max(low, min(high, value))",
+                "evidence": [
+                  "clamp(5, 0, 10) == 5",
+                  "clamp(-2, 0, 10) == 0",
+                  "clamp(12, 0, 10) == 10"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "patch_matches_reference": true,
+                  "behavior_matches_except_syntax": false,
+                  "declared_checks": [
+                    "clamp(5, 0, 10) == 5",
+                    "clamp(-2, 0, 10) == 0",
+                    "clamp(12, 0, 10) == 10"
+                  ]
+                },
+                "validated_rules": [
+                  "software_patch_must_satisfy_declared_behavior"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "software.off-by-one",
+          "domain": "software_repair",
+          "mode": "qimo",
+          "status": "closed",
+          "epochs_used": 2,
+          "model_calls": 2,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items))\",\n  \"evidence\": [\"observable reason tied to a declared check: collect(['a', 'b']) == ['a', 'b']\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items))",
+                "evidence": [
+                  "observable reason tied to a declared check: collect(['a', 'b']) == ['a', 'b']"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.8,
+                "gaps": [
+                  {
+                    "code": "patch_syntax_missing_colon",
+                    "message": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                    "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                  }
+                ],
+                "evidence": {
+                  "patch_matches_reference": false,
+                  "behavior_matches_except_syntax": true,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "patch_syntax_missing_colon",
+                  "task": "The proposed Python for-loop header is syntactically incomplete because it does not end with a colon.",
+                  "evidence_required": "Return a complete Python for-loop header ending with a colon."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed",
+                "software_patch_must_satisfy_declared_behavior"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"software.off-by-one\",\n  \"answer\": \"for i in range(len(items)):\",\n  \"evidence\": [\"observable reason tied to a declared check: collect(['a', 'b']) == ['a', 'b']\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "software.off-by-one",
+                "answer": "for i in range(len(items)):",
+                "evidence": [
+                  "observable reason tied to a declared check: collect(['a', 'b']) == ['a', 'b']"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "patch_matches_reference": true,
+                  "behavior_matches_except_syntax": false,
+                  "declared_checks": [
+                    "collect([]) == []",
+                    "collect(['a']) == ['a']",
+                    "collect(['a', 'b']) == ['a', 'b']"
+                  ]
+                },
+                "validated_rules": [
+                  "software_patch_must_satisfy_declared_behavior"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed",
+                "software_patch_must_satisfy_declared_behavior"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.withdraw-order",
+          "domain": "smart_contract_audit",
+          "mode": "qimo",
+          "status": "not_closed",
+          "epochs_used": 3,
+          "model_calls": 3,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['missing_zero_address_check', 'tx_origin_authentication'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"tx_origin_authentication\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.6,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 1
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['tx_origin_authentication'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 3,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.withdraw-order\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\"],\n  \"evidence\": [\"observable reason tied to a declared check\", \"observable reason tied to a declared check\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.withdraw-order",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check"
+                ],
+                "evidence": [
+                  "observable reason tied to a declared check",
+                  "observable reason tied to a declared check"
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.6,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['missing_zero_address_check'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "reentrancy"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 1
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['missing_zero_address_check'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "contracts.owner-validation",
+          "domain": "smart_contract_audit",
+          "mode": "qimo",
+          "status": "not_closed",
+          "epochs_used": 3,
+          "model_calls": 3,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 2,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            },
+            {
+              "epoch": 3,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"contracts.owner-validation\",\n  \"answer\": [\"reentrancy\", \"missing_zero_address_check\", \"tx_origin_authentication\"],\n  \"evidence\": [\"The code allows any address to be assigned as the owner, without checking for a zero address.\", \"The code does not validate the origin of the transaction.\", \"The code does not perform any authentication checks on the transaction origin.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "contracts.owner-validation",
+                "answer": [
+                  "reentrancy",
+                  "missing_zero_address_check",
+                  "tx_origin_authentication"
+                ],
+                "evidence": [
+                  "The code allows any address to be assigned as the owner, without checking for a zero address.",
+                  "The code does not validate the origin of the transaction.",
+                  "The code does not perform any authentication checks on the transaction origin."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": false,
+                "score": 0.4667,
+                "gaps": [
+                  {
+                    "code": "unsupported_findings",
+                    "message": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                    "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                  }
+                ],
+                "evidence": {
+                  "matched_findings": [
+                    "missing_zero_address_check"
+                  ],
+                  "missing_count": 0,
+                  "unsupported_count": 2
+                },
+                "validated_rules": []
+              },
+              "feedback_tasks": [
+                {
+                  "gap_code": "unsupported_findings",
+                  "task": "Unsupported finding identifiers were produced: ['reentrancy', 'tx_origin_authentication'].",
+                  "evidence_required": "Remove findings that cannot be tied to the supplied code."
+                }
+              ],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.release-order",
+          "domain": "multi_step_planning",
+          "mode": "qimo",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [
+            "plan_must_cover_steps_and_respect_precedence"
+          ],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"planning.release-order\",\n  \"answer\": [\"spec\", \"implement\", \"test\", \"security_review\", \"release\"],\n  \"evidence\": [\"Use every step exactly once.\", \"Satisfy every precedence constraint.\"],\n  \"rules_applied\": [\"no_silent_success\", \"external_validator_controls_closure\", \"failed_candidate_must_remain_not_closed\"],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.release-order",
+                "answer": [
+                  "spec",
+                  "implement",
+                  "test",
+                  "security_review",
+                  "release"
+                ],
+                "evidence": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "rules_applied": [
+                  "no_silent_success",
+                  "external_validator_controls_closure",
+                  "failed_candidate_must_remain_not_closed"
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "implement",
+                    "release",
+                    "security_review",
+                    "spec",
+                    "test"
+                  ],
+                  "precedence_passed": 5,
+                  "precedence_total": 5
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        },
+        {
+          "task_id": "planning.data-pipeline",
+          "domain": "multi_step_planning",
+          "mode": "qimo",
+          "status": "closed",
+          "epochs_used": 1,
+          "model_calls": 1,
+          "committed_rules": [],
+          "history": [
+            {
+              "epoch": 1,
+              "mode": "qimo",
+              "raw_output": "{\n  \"task_id\": \"planning.data-pipeline\",\n  \"answer\": [\"collect\", \"validate\", \"transform\", \"train\", \"evaluate\"],\n  \"evidence\": [\n    \"collect before validate is satisfied\",\n    \"validate before transform is satisfied\",\n    \"transform before train is satisfied\",\n    \"train before evaluate is satisfied\"\n  ],\n  \"rules_applied\": [\n    \"Use every step exactly once.\",\n    \"Satisfy every precedence constraint.\"\n  ],\n  \"closure_claim\": false\n}",
+              "candidate": {
+                "task_id": "planning.data-pipeline",
+                "answer": [
+                  "collect",
+                  "validate",
+                  "transform",
+                  "train",
+                  "evaluate"
+                ],
+                "evidence": [
+                  "collect before validate is satisfied",
+                  "validate before transform is satisfied",
+                  "transform before train is satisfied",
+                  "train before evaluate is satisfied"
+                ],
+                "rules_applied": [
+                  "Use every step exactly once.",
+                  "Satisfy every precedence constraint."
+                ],
+                "closure_claim": false
+              },
+              "parse_error": null,
+              "validation": {
+                "closed": true,
+                "score": 1.0,
+                "gaps": [],
+                "evidence": {
+                  "steps_present": [
+                    "collect",
+                    "evaluate",
+                    "train",
+                    "transform",
+                    "validate"
+                  ],
+                  "precedence_passed": 4,
+                  "precedence_total": 4
+                },
+                "validated_rules": [
+                  "plan_must_cover_steps_and_respect_precedence"
+                ]
+              },
+              "feedback_tasks": [],
+              "rules_available": [
+                "no_silent_success",
+                "external_validator_controls_closure",
+                "failed_candidate_must_remain_not_closed",
+                "plan_must_cover_steps_and_respect_precedence"
+              ],
+              "model_claimed_closure": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "boundary": "This benchmark does not demonstrate consciousness, AGI, weight-level learning, or unlimited self-evolution. It tests whether explicit verified gaps improve task closure for an unchanged base model.",
+  "runtime_seconds": 211.9715
+}
