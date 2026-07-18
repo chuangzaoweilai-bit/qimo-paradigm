@@ -1,0 +1,43 @@
+{
+  "training_task_count": 120,
+  "training_example_count": 240,
+  "holdout_task_count": 30,
+  "holdout_task_ids": [
+    "holdout.software.loop-000",
+    "holdout.contracts.reentrancy-000",
+    "holdout.planning.workflow-000",
+    "holdout.software.clamp-001",
+    "holdout.contracts.missing_zero_address_check-001",
+    "holdout.planning.workflow-001",
+    "holdout.software.loop-002",
+    "holdout.contracts.tx_origin_authentication-002",
+    "holdout.planning.workflow-002",
+    "holdout.software.clamp-003",
+    "holdout.contracts.reentrancy-003",
+    "holdout.planning.workflow-003",
+    "holdout.software.loop-004",
+    "holdout.contracts.missing_zero_address_check-004",
+    "holdout.planning.workflow-004",
+    "holdout.software.clamp-005",
+    "holdout.contracts.tx_origin_authentication-005",
+    "holdout.planning.workflow-005",
+    "holdout.software.loop-006",
+    "holdout.contracts.reentrancy-006",
+    "holdout.planning.workflow-006",
+    "holdout.software.clamp-007",
+    "holdout.contracts.missing_zero_address_check-007",
+    "holdout.planning.workflow-007",
+    "holdout.software.loop-008",
+    "holdout.contracts.tx_origin_authentication-008",
+    "holdout.planning.workflow-008",
+    "holdout.software.clamp-009",
+    "holdout.contracts.reentrancy-009",
+    "holdout.planning.workflow-009"
+  ],
+  "holdout_domains": [
+    "multi_step_planning",
+    "smart_contract_audit",
+    "software_repair"
+  ],
+  "note": "Holdout tasks are regenerated from a disjoint seed at evaluation time."
+}

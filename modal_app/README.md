@@ -50,3 +50,29 @@ python -m modal_app.run_multidomain_benchmark --output artifacts/qimo-multidomai
 The runner compares one-shot inference, generic retry, and Qimo structured
 feedback on the same tasks and writes both a complete JSON audit record and a
 Markdown summary.
+
+## Qimo native adapter
+
+`qimo_native_training.py` trains a Qimo-specific LoRA adapter on the generated
+origin/terminal trajectories and stores it in the Modal volume
+`qimo-native-adapter`.
+
+```powershell
+$env:PYTHONPATH = "src"
+python scripts\generate_qimo_dataset.py
+python -m modal run -m modal_app.qimo_native_training --train --epochs 2
+python -m modal deploy -m modal_app.qimo_native_training
+```
+
+Compare original one-shot inference, original Qwen with the native kernel, and
+Qimo LoRA with the same kernel:
+
+```powershell
+$env:PYTHONPATH = "src"
+python -m modal_app.run_native_holdout `
+  --output artifacts/qimo-native-holdout-v2 `
+  --per-domain 10
+```
+
+The published v2 result and its claim boundaries are documented in
+[`docs/qimo-native-model-v2.en.md`](../docs/qimo-native-model-v2.en.md).

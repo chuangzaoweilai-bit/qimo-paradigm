@@ -14,8 +14,13 @@ We hope more people will improve and maintain it. A new computing paradigm canno
 
 ## Executable Evidence
 
-The repository now contains a first executable base-model runtime and a frozen
-multi-domain pilot benchmark:
+The repository now contains two frozen executable stages:
+
+- [Qimo Native Model v2](docs/qimo-native-model-v2.en.md): Qimo LoRA training,
+  native structural kernel, frozen 30-task holdout, limitations, and
+  reproduction steps.
+- [Native v2 full audit](artifacts/qimo-native-holdout-v2.json): every raw
+  output, validation, repair action, termination, and structural invariant.
 
 - [Qimo Structured Model](docs/qimo-structured-model.en.md): architecture,
   closure authority, feedback, and verified rule memory.
@@ -25,6 +30,16 @@ multi-domain pilot benchmark:
   output, validation result, gap, feedback task, and rule snapshot.
 - [Live Closure Lab](https://huggingface.co/spaces/qimo-paradigm/qimo-closure-lab):
   browser simulation and a bounded Modal-backed model proposal.
+
+In the frozen v2 synthetic holdout, original Qwen one-shot closed 16/30 tasks,
+original Qwen with the native Qimo kernel closed 27/30, and Qimo LoRA with the
+same kernel closed 30/30. The final path used 30 model calls and no structural
+repair steps. All closure decisions came from external validators.
+
+The v2 holdout contains unseen instances but uses the same generator families
+as training. It is evidence for the declared protocol, not a claim of 100%
+open-world correctness, complete replacement of the base model, self-evolving
+AGI, or a universal proof.
 
 In the frozen six-task pilot, the same Qwen3-1.7B model closed 3/6 tasks with
 one-shot inference, 3/6 with generic retry, and 4/6 with Qimo structured

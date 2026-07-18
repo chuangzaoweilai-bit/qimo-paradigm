@@ -176,6 +176,7 @@ def validate_security_findings(
             "matched_findings": sorted(expected_set & observed_set),
             "missing_count": len(missing),
             "unsupported_count": len(unexpected),
+            "unsupported_findings": sorted(unexpected),
         },
         validated_rules=("security_finding_requires_code_evidence",) if closed else (),
     )

@@ -60,7 +60,7 @@ def parse_candidate(raw_output: str) -> tuple[dict[str, Any] | None, str | None]
     return parsed, None
 
 
-def _feedback_tasks(gaps: tuple[Gap, ...]) -> list[dict[str, str]]:
+def feedback_tasks_from_gaps(gaps: tuple[Gap, ...]) -> list[dict[str, str]]:
     return [
         {
             "gap_code": gap.code,
@@ -95,7 +95,7 @@ Do not use Markdown. Do not add text outside the JSON object.
 """
 
 
-def _epoch_prompt(
+def build_epoch_prompt(
     task: TaskSpec,
     mode: str,
     epoch: int,
@@ -142,7 +142,7 @@ class QimoStructuredModel:
 
         for epoch in range(1, max_epochs + 1):
             rules = self.memory.rules_for(task.domain)
-            prompt = _epoch_prompt(
+            prompt = build_epoch_prompt(
                 task,
                 mode,
                 epoch,
@@ -153,7 +153,7 @@ class QimoStructuredModel:
             raw_output = self.adapter.generate(prompt)
             candidate, parse_error = parse_candidate(raw_output)
             validation = validate_task(task, candidate, parse_error)
-            feedback = _feedback_tasks(validation.gaps) if mode == "qimo" else []
+            feedback = feedback_tasks_from_gaps(validation.gaps) if mode == "qimo" else []
             model_claimed_closure = bool(candidate and candidate.get("closure_claim") is True)
             history.append(
                 EpochRecord(
