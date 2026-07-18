@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A bounded closure simulation for the Qimo Paradigm.">
+  <title>Qimo Paradigm Closure Lab</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17231d;
+      --muted: #58645e;
+      --paper: #ffffff;
+      --ground: #f3f6f4;
+      --line: #d7dfda;
+      --green: #15784a;
+      --green-soft: #e6f4ec;
+      --amber: #b27a08;
+      --amber-soft: #fff4d6;
+      --red: #a63f3d;
+      --red-soft: #fae9e8;
+      --dark: #14231b;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--ground); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--ground);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+    button, input, textarea { font: inherit; letter-spacing: 0; }
+    a { color: inherit; }
+
+    .top-band {
+      width: 100%;
+      color: #ffffff;
+      background: var(--dark);
+      border-bottom: 5px solid #e2b93b;
+    }
+    .top-inner {
+      width: min(1240px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 26px 0 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand h1 { margin: 0; font-size: 30px; line-height: 1.15; }
+    .brand p { margin: 8px 0 0; max-width: 760px; color: #d7e0da; line-height: 1.5; }
+    .scope-badge {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      color: #18211d;
+      background: #f4cc58;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    main {
+      width: min(1240px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 22px 0 40px;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .flow-step {
+      min-height: 58px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .flow-step:first-child, .flow-step:last-child { color: var(--green); border-color: var(--green); }
+    .flow-step:nth-child(3) { color: var(--amber); border-color: #d9b64f; }
+
+    .workbench {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.82fr) minmax(460px, 1.18fr);
+      gap: 28px;
+      align-items: start;
+      padding: 22px 0 26px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .section-title { margin: 0 0 16px; font-size: 18px; }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    textarea, input[type="number"] {
+      width: 100%;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid #cbd5cf;
+      border-radius: 6px;
+      outline: none;
+    }
+    textarea { min-height: 90px; resize: vertical; padding: 11px 12px; line-height: 1.45; }
+    textarea:focus, input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(21, 120, 74, 0.12); }
+    .epoch-row { display: grid; grid-template-columns: 1fr 74px; gap: 10px; align-items: center; }
+    input[type="range"] { width: 100%; accent-color: var(--green); }
+    input[type="number"] { height: 40px; padding: 0 10px; text-align: center; }
+    .run-button {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 4px;
+      color: #ffffff;
+      background: var(--green);
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 750;
+    }
+    .run-button:hover { background: #0f653d; }
+    .run-button:focus-visible { outline: 3px solid rgba(21, 120, 74, 0.25); outline-offset: 2px; }
+
+    .result-list { display: grid; gap: 12px; }
+    .result-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 86px;
+      gap: 12px;
+      align-items: center;
+      min-height: 52px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .result-row:last-child { border-bottom: 0; }
+    .result-name { font-weight: 750; }
+    .meter { height: 10px; overflow: hidden; background: #dfe5e1; border-radius: 3px; }
+    .meter-fill { height: 100%; width: 0; transition: width 220ms ease; }
+    .baseline-fill { background: var(--red); }
+    .qimo-fill { background: var(--green); }
+    .status {
+      justify-self: end;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .status.closed { color: var(--green); background: var(--green-soft); }
+    .status.not-closed { color: var(--red); background: var(--red-soft); }
+    .result-copy { margin: 14px 0 0; color: var(--muted); line-height: 1.55; }
+    .boundary {
+      margin: 18px 0 0;
+      padding: 12px 14px;
+      color: #72520e;
+      background: var(--amber-soft);
+      border-left: 4px solid var(--amber);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .audit { padding-top: 26px; }
+    .audit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+    .audit-head h2 { margin: 0; font-size: 20px; }
+    .audit-head p { margin: 0; color: var(--muted); font-size: 13px; }
+    .table-scroll {
+      width: 100%;
+      margin-top: 14px;
+      overflow-x: auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    table { width: 100%; min-width: 1020px; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 11px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid #e4e9e6; }
+    th { color: #3f4b44; background: #edf1ef; font-size: 12px; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr.qimo-closed { background: #f0f8f4; }
+    td.feedback { min-width: 360px; color: var(--muted); }
+    .mode-chip { white-space: nowrap; font-weight: 700; }
+
+    details {
+      margin-top: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    summary { padding: 12px 14px; cursor: pointer; font-weight: 700; }
+    pre {
+      max-height: 460px;
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      color: #d8e6de;
+      background: #15231b;
+      border-radius: 0 0 6px 6px;
+      font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    footer {
+      width: min(1240px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 0 0 32px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--green); font-weight: 750; }
+
+    @media (max-width: 820px) {
+      .top-inner { align-items: flex-start; flex-direction: column; }
+      .brand h1 { font-size: 25px; }
+      .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .workbench { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+      .result-row { grid-template-columns: 1fr 72px; }
+      .result-row .meter { grid-column: 1 / -1; grid-row: 2; }
+      .audit-head { align-items: flex-start; flex-direction: column; gap: 4px; }
+    }
+    @media (max-width: 460px) {
+      .top-inner, main, footer { width: min(100% - 22px, 1240px); }
+      .top-inner { padding-top: 20px; }
+      .brand h1 { font-size: 23px; overflow-wrap: anywhere; }
+      .scope-badge { white-space: normal; }
+      .flow-step { min-height: 54px; padding: 8px 5px; }
+      .workbench { padding-top: 18px; }
+      th, td { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-band">
+    <div class="top-inner">
+      <div class="brand">
+        <h1>Qimo Paradigm Closure Lab</h1>
+        <p>Bounded structural self-evolution through explicit gaps, feedback tasks, and closure verification.</p>
+      </div>
+      <div class="scope-badge">Open structural simulation</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="flow" aria-label="Qimo closure sequence">
+      <div class="flow-step">Origin</div>
+      <div class="flow-step">Gap audit</div>
+      <div class="flow-step">Feedback task</div>
+      <div class="flow-step">Learning update</div>
+      <div class="flow-step">Quality gates</div>
+      <div class="flow-step">Verified terminal</div>
+    </section>
+
+    <section class="workbench">
+      <form id="simulation-form">
+        <h2 class="section-title">Declared structure</h2>
+        <div class="field">
+          <label for="origin">Origin</label>
+          <textarea id="origin">AI wants to improve its own semantic competence.</textarea>
+        </div>
+        <div class="field">
+          <label for="terminal">Terminal</label>
+          <textarea id="terminal">AI reaches a verified closed structure containing complete semantic units, quality gates, feedback, memory updates, rule updates, and transfer.</textarea>
+        </div>
+        <div class="field">
+          <label for="epochs">Maximum epochs</label>
+          <div class="epoch-row">
+            <input id="epochs" type="range" min="1" max="6" step="1" value="6">
+            <input id="epoch-number" type="number" min="1" max="6" step="1" value="6" aria-label="Maximum epochs">
+          </div>
+        </div>
+        <button class="run-button" type="submit">Run closure comparison</button>
+      </form>
+
+      <section aria-live="polite">
+        <h2 class="section-title">Closure result</h2>
+        <div class="result-list">
+          <div class="result-row">
+            <div class="result-name">Fixed-output baseline</div>
+            <div class="meter" aria-label="Baseline semantic coverage"><div id="baseline-meter" class="meter-fill baseline-fill"></div></div>
+            <div id="baseline-status" class="status not-closed">Not closed</div>
+          </div>
+          <div class="result-row">
+            <div class="result-name">Qimo feedback loop</div>
+            <div class="meter" aria-label="Qimo semantic coverage"><div id="qimo-meter" class="meter-fill qimo-fill"></div></div>
+            <div id="qimo-status" class="status not-closed">Not closed</div>
+          </div>
+        </div>
+        <p id="result-copy" class="result-copy"></p>
+        <div class="boundary">This deterministic demo tests the declared feedback mechanism. It does not prove consciousness, AGI, or unlimited autonomous evolution.</div>
+      </section>
+    </section>
+
+    <section class="audit">
+      <div class="audit-head">
+        <h2>Epoch audit</h2>
+        <p>Every gap, task, update, and closure state remains explicit.</p>
+      </div>
+      <div class="table-scroll" tabindex="0" aria-label="Epoch comparison table">
+        <table>
+          <thead>
+            <tr>
+              <th>Mode</th><th>Epoch</th><th>Semantic</th><th>Gates</th>
+              <th>Missing units</th><th>Missing gates</th><th>Status</th><th>Feedback task</th>
+            </tr>
+          </thead>
+          <tbody id="audit-body"></tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Full closure record</summary>
+        <pre id="record"></pre>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Source and specification:
+    <a href="https://github.com/chuangzaoweilai-bit/qimo-paradigm" target="_blank" rel="noreferrer">Qimo Paradigm on GitHub</a>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const REQUIRED_UNITS = [
+      "origin_modeling", "terminal_modeling", "path_generation",
+      "forbidden_path_rejection", "quality_gate", "gap_detection",
+      "feedback_task_generation", "semantic_memory_update", "rule_update",
+      "cross_domain_transfer"
+    ];
+    const QUALITY_GATES = [
+      "has_origin", "has_terminal", "records_allowed_paths",
+      "records_forbidden_paths", "has_verification", "feeds_gaps_back"
+    ];
+    const LEARNING_PLAN = {
+      1: { units: ["origin_modeling", "terminal_modeling"], gates: ["has_origin", "has_terminal"] },
+      2: { units: ["path_generation", "forbidden_path_rejection"], gates: ["records_allowed_paths", "records_forbidden_paths"] },
+      3: { units: ["quality_gate", "gap_detection"], gates: ["has_verification"] },
+      4: { units: ["feedback_task_generation", "semantic_memory_update"], gates: ["feeds_gaps_back"] },
+      5: { units: ["rule_update", "cross_domain_transfer"], gates: [] }
+    };
+
+    function audit(state) {
+      const missingUnits = REQUIRED_UNITS.filter((item) => !state.units.has(item));
+      const missingGates = QUALITY_GATES.filter((item) => !state.gates.has(item));
+      return {
+        origin: state.origin,
+        terminal: state.terminal,
+        coverage: Number((1 - missingUnits.length / REQUIRED_UNITS.length).toFixed(2)),
+        gate_coverage: Number((1 - missingGates.length / QUALITY_GATES.length).toFixed(2)),
+        missing_units: missingUnits,
+        missing_gates: missingGates,
+        status: missingUnits.length === 0 && missingGates.length === 0 ? "closed" : "not_closed"
+      };
+    }
+
+    function feedbackTasks(currentAudit) {
+      const tasks = currentAudit.missing_units.slice(0, 2).map((item) => `Close semantic gap: ${item}`);
+      currentAudit.missing_gates.slice(0, 1).forEach((item) => tasks.push(`Add quality gate: ${item}`));
+      return tasks;
+    }
+
+    function compare(origin, terminal, maxEpochs) {
+      const baseline = {
+        origin,
+        terminal,
+        units: new Set(["origin_modeling", "path_generation"]),
+        gates: new Set(["has_origin"])
+      };
+      const baselineHistory = [];
+      for (let epoch = 1; epoch <= maxEpochs; epoch += 1) {
+        baselineHistory.push({
+          epoch,
+          audit: audit(baseline),
+          feedback_tasks: [],
+          note: "The process repeats without converting gaps into tasks."
+        });
+      }
+
+      const qimo = { origin, terminal, units: new Set(), gates: new Set(), rules: ["no_silent_success"] };
+      const qimoHistory = [];
+      for (let epoch = 1; epoch <= maxEpochs; epoch += 1) {
+        const before = audit(qimo);
+        const tasks = feedbackTasks(before);
+        const plan = LEARNING_PLAN[epoch] || { units: [], gates: [] };
+        plan.units.forEach((item) => qimo.units.add(item));
+        plan.gates.forEach((item) => qimo.gates.add(item));
+        if (plan.units.includes("rule_update")) qimo.rules.push("failed_path_must_generate_new_task");
+        if (plan.units.includes("cross_domain_transfer")) qimo.rules.push("closed_structure_can_transfer_domains");
+        const after = audit(qimo);
+        qimoHistory.push({
+          epoch,
+          before,
+          feedback_tasks: tasks,
+          learned: { units: plan.units, gates: plan.gates },
+          rules: [...qimo.rules],
+          after
+        });
+        if (after.status === "closed") break;
+      }
+
+      return {
+        claim_scope: "bounded, verifiable structural self-evolution",
+        origin,
+        terminal,
+        closure_rule: "success requires every semantic unit and quality gate",
+        fixed_output_baseline: baselineHistory,
+        qimo_feedback_loop: qimoHistory,
+        conclusion: "Within this declared model, the Qimo loop converts explicit gaps into feedback tasks, updates memory and rules, and verifies closure."
+      };
+    }
+
+    function tableRow(mode, epoch, currentAudit, tasks) {
+      const tr = document.createElement("tr");
+      if (currentAudit.status === "closed") tr.className = "qimo-closed";
+      const cells = [
+        mode,
+        epoch,
+        `${Math.round(currentAudit.coverage * 100)}%`,
+        `${Math.round(currentAudit.gate_coverage * 100)}%`,
+        currentAudit.missing_units.length,
+        currentAudit.missing_gates.length,
+        currentAudit.status,
+        tasks.length ? tasks.join(" | ") : "None"
+      ];
+      cells.forEach((value, index) => {
+        const td = document.createElement("td");
+        td.textContent = String(value);
+        if (index === 0) td.className = "mode-chip";
+        if (index === 7) td.className = "feedback";
+        tr.appendChild(td);
+      });
+      return tr;
+    }
+
+    function render() {
+      const origin = document.querySelector("#origin").value.trim() || "A system wants to improve its semantic competence.";
+      const terminal = document.querySelector("#terminal").value.trim() || "The system reaches a verified closed semantic structure.";
+      const maxEpochs = Math.max(1, Math.min(6, Number(document.querySelector("#epoch-number").value) || 6));
+      const result = compare(origin, terminal, maxEpochs);
+      const baselineFinal = result.fixed_output_baseline.at(-1).audit;
+      const qimoFinal = result.qimo_feedback_loop.at(-1).after;
+      const closedEpoch = result.qimo_feedback_loop.find((item) => item.after.status === "closed")?.epoch;
+
+      document.querySelector("#baseline-meter").style.width = `${baselineFinal.coverage * 100}%`;
+      document.querySelector("#qimo-meter").style.width = `${qimoFinal.coverage * 100}%`;
+      const qimoStatus = document.querySelector("#qimo-status");
+      qimoStatus.textContent = qimoFinal.status === "closed" ? "Closed" : "Not closed";
+      qimoStatus.className = `status ${qimoFinal.status === "closed" ? "closed" : "not-closed"}`;
+
+      document.querySelector("#result-copy").textContent = closedEpoch
+        ? `The fixed-output baseline remains at ${Math.round(baselineFinal.coverage * 100)}% after ${maxEpochs} epoch(s). The Qimo loop reaches verified closure at epoch ${closedEpoch}.`
+        : `The fixed-output baseline remains at ${Math.round(baselineFinal.coverage * 100)}%. The Qimo loop reaches ${Math.round(qimoFinal.coverage * 100)}% after ${maxEpochs} epoch(s) and has not yet closed.`;
+
+      const body = document.querySelector("#audit-body");
+      body.replaceChildren();
+      result.fixed_output_baseline.forEach((item) => body.appendChild(tableRow("Fixed-output baseline", item.epoch, item.audit, [])));
+      result.qimo_feedback_loop.forEach((item) => body.appendChild(tableRow("Qimo feedback loop", item.epoch, item.after, item.feedback_tasks)));
+      document.querySelector("#record").textContent = JSON.stringify(result, null, 2);
+    }
+
+    const range = document.querySelector("#epochs");
+    const number = document.querySelector("#epoch-number");
+    range.addEventListener("input", () => { number.value = range.value; });
+    number.addEventListener("input", () => {
+      const value = Math.max(1, Math.min(6, Number(number.value) || 1));
+      range.value = String(value);
+    });
+    document.querySelector("#simulation-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
